@@ -1,0 +1,27 @@
+{% include 'sitio/header.html' %}
+
+
+    <div class="row">
+        {% for post in post %}
+        <div class="col-md-3">
+            <div class="card">
+                <img class="card-img-top" src="/img/{{ post[4]}}" alt="Title">
+                <div class="card-body">
+                    <h4 class="card-title">{{ post[1] }}</h4>
+                    <p class="card-text">
+                        {{ post[3] }}
+                    </p>
+                    <a name="" id="" class="btn btn-primary" href="#" role="button">Leer Más...</a>
+                </div>
+            </div>
+                
+        </div>
+        
+        {% endfor %}
+    </div>
+
+
+
+
+
+{% include 'sitio/footer.html' %}

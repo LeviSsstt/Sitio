@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog personal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+    <link rel="stylesheet" href="css/ionicons.min.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+<body>
+    <header class="header-area">
+        <div class="container-logo">
+            <div class="row ">
+                <div class="col-xl-6">
+                    <div class="logo">
+                        <a href="/">
+                            <img src="img/ico.png" alt="">
+                        </a>   
+                    </div>
+                </div>
+                <div class="col-xl-6 text-end">
+                    <div class="main-menu-btn">
+                        <a href="#">
+                            <i class="ion-navicon"></i>
+                        </a>
+                           
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main>
+        <main>
+            <section>
+              <img src="img/fondob.png" id="bg" />
+              <h2 id="text">SCROLL</h2>
+              <!-- <img src="./img/goku.png" id="man" class="personaje" /> -->
+              
+            </section>
+            <div class="sec">
+              <div class="content">
+                <h2>ABOUT</h2>
+                <ps style="text-align: justify; color: white; "word-wrap: break-word;>
+                  ¡Bienvenidos! Aquí encontrarás un espacio donde comparto mis experiencias, pensamientos y reflexiones. Este es un lugar en el que puedo ser yo mismo, y espero que te sientas igual de cómodo/a aquí. Mi blog abarca una gran variedad de temas que me interesan, como la literatura, la música, el manga y la tecnología. Me encanta escribir y expresarme a través de la palabra escrita, y espero que puedas encontrar algo en mi blog que te haga sentir identificado/a o que te inspire de alguna manera. ¡Gracias por leer!
+                </p>
+              </div>
+            </div>
+          <div class="main-menu-content">
+            <a href="" class="main-menu-close-btn">
+                <i class="ion-close"></i>
+            </a>
+         <ul>
+            <li><a href="/">Home</a> </li>
+            <li><a href="/mangas">Mangas fav</a> </li>
+            <!-- <li><a href="/post">Post</a> </li> -->
+            
+            <li><a href="/admin/login">Login</a> </li>
+         </ul>   
+        </div>
+        <div class="container">
+          {% for post in post %}
+          <div class="card">
+            <img src="/img/{{ post[4]}}">
+            <a href="/blog/{{ post[1]}}">  <h2>{{ post[1] }}</h2></a>
+            
+            <p> {{ post[3] }}</p>
+            <div class="tags">
+              <span>{{post[6]}}</span>
+              <!-- <span>Etiqueta 2</span> -->
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        </main>
+         <div id="lastray" class="element"></div>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.3.1/gsap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.3.1/ScrollTrigger.min.js"></script>
+        
+        <footer>
+          <div class="container-footer">
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <p>&copy; 2021 - Mi blog personal</p>
+                <div class="social-icons">
+                  <a href="https://github.com/gadivalr" target="_blank"><i class="fab fa-github fa-2x text-white"></i></a>
+                  <a href="https://www.instagram.com/gadi.valar/" target="_blank"><i class="fab fa-instagram fa-2x text-white"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
+        
+       
+   
+   
+    <script src="js/jquery-3.6.3.min.js"></script>
+    <script src="js/jquery-migrate-3.4.1.min.js"></script>
+    <script src="js/popper.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

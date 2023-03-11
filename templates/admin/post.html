@@ -1,0 +1,80 @@
+{% include 'admin/header.html' %}
+
+    <div class="container">
+        <h1 class="text-center mb-5">Datos Post</h1>
+        <form action="/admin/post/guardar" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="txtNombre" class="form-label">Titulo:</label>
+                          <input type="txt"
+                            class="form-control" name="txtNombre" id="txtNombre" aria-describedby="helpId" placeholder="escriba nombre libro">
+            </div>
+            <div class="form-group">
+                <label for="txtFecha" class="form-label">Fecha:</label>
+                <input type="text"
+                  class="form-control" name="txtFecha" id="txtFecha" aria-describedby="helpId" placeholder="escriba fecha">
+            </div>
+            <div class="form-group">
+                <label for="txtTag" class="form-label">Tag:</label>
+                <input type="text"
+                  class="form-control" name="txtTag" id="txtTag" aria-describedby="helpId" placeholder="escriba fecha">
+            </div>
+            <div class="form-group">
+                <label for="txtDescripcion" class="form-label">Descripcion:</label>
+                <input type="text"
+                  class="form-control" name="txtDescripcion" id="txtDescripcion" aria-describedby="helpId" placeholder="escriba descripcion"> 
+            </div>
+            <div class="form-group">
+                <input type="file"
+                class="form-control" name="txtImagen" id="txtImagen" aria-describedby="helpId" placeholder="Seleccione la imagen">
+            <div class="form-group">
+                <div class="mb-3">
+                  <label for="txtContenido" class="form-label">Contenido</label>
+                  <textarea class="form-control" name="txtContenido" id="txtContenido" rows="3"></textarea>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Enviar</button>
+        </form>
+    </div>
+    <div class="  col-md-5">
+        <div class="table-responsive">
+            <table class="table table-primary">
+                <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Acciones</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for post in npost %}
+                    <tr >
+                        <td scope="row">{{ post[0] }}</td>
+                        <td>{{ post[1] }}</td>
+                        <td> 
+                           <img width="60" src="/img/{{post[4]}}" class="img-fluid rounded-top" alt="">
+                           {{post[4]}}
+                        </td>
+
+                        <td>
+                            <form action="/admin/post/delete" method="post">
+                                <input value= {{ post[0] }} type="hidden" name="txtID" id="txtID">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                        
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        
+    </div>
+    
+</div>
+</div>
+{% include 'admin/footer.html' %}
+
+
