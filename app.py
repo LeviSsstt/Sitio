@@ -9,6 +9,7 @@ import html
 import re
 import sqlite3
 import mysql.connector
+import psycopg2
 
 
 app=Flask(__name__)
@@ -16,18 +17,18 @@ app=Flask(__name__)
 
 
 app.secret_key="clave_secreta"
-mysql = MySQL()
-app.config['MYSQL_DATABASE_HOST'] = 'dpg-cg6advt269v5l65bmqq0-a'
-app.config['MYSQL_DATABASE_USER'] = 'sitio_user'
-app.config['MYSQL_DATABASE_PASSWORD'] = '9NiEz3sJHh6OgpiCFsMEkqNLS6Kf83Xt'
-app.config['MYSQL_DATABASE_DB'] = 'sitio'
-mysql.init_app(app)
+#mysql = MySQL()
+#app.config['MYSQL_DATABASE_HOST'] = 'dpg-cg6advt269v5l65bmqq0-a'
+#app.config['MYSQL_DATABASE_USER'] = 'sitio_user'
+#app.config['MYSQL_DATABASE_PASSWORD'] = '9NiEz3sJHh6OgpiCFsMEkqNLS6Kf83Xt'
+#app.config['MYSQL_DATABASE_DB'] = 'sitio'
+#mysql.init_app(app)
 
-
+#postgresql://sitio_user:9NiEz3sJHh6OgpiCFsMEkqNLS6Kf83Xt@dpg-cg6advt269v5l65bmqq0-a.oregon-postgres.render.com/sitio
 def create_table():
     # crea una conexión a la base de datos
-    conn = mysql.connector.connect(
-        host='dpg-cg6advt269v5l65bmqq0-a',
+    conn = psycopg2.connect(
+        host='dpg-cg6advt269v5l65bmqq0-a.oregon-postgres.render.com',
         user='sitio_user',
         password='9NiEz3sJHh6OgpiCFsMEkqNLS6Kf83Xt',
         database='sitio'
@@ -39,9 +40,9 @@ def create_table():
     # crea la tabla post si esta no existe
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS post (
-            id INT AUTO_INCREMENT PRIMARY KEY,
+            id SERIAL PRIMARY KEY,
             nombre VARCHAR(255) NOT NULL,
-            descripcion VARCHAR(255) NOT NULL,
+            descripcion TEXT,
             imagen VARCHAR(255),
             contenido TEXT NOT NULL,
             tag VARCHAR(255)
@@ -70,7 +71,7 @@ def fonts_link(fonts):
 
 @app.route('/')
 def inicio():
-    conexion=mysql.connect()
+    conexion=psycopg2.connect()
     cursor=conexion.cursor()
     cursor.execute("SELECT * FROM `post`")
     post=cursor.fetchall()
@@ -84,7 +85,7 @@ def imagen(imagen):
 
 @app.route('/post')
 def post():
-    conexion=mysql.connect()
+    conexion=psycopg2.connect()
     cursor=conexion.cursor()
     cursor.execute("SELECT * FROM `post`")
     post=cursor.fetchall()
@@ -131,7 +132,7 @@ def admin_cerrar():
 def admin_post():
     if not session.get('login'):
         return redirect('/admin/login')
-    conexion=mysql.connect()
+    conexion=psycopg2.connect()
     cursor=conexion.cursor()
     cursor.execute("SELECT * FROM `post`")
     post=cursor.fetchall()
@@ -172,7 +173,7 @@ def admin_post_guardar():
 
     datos=(titulo,fecha,descripcion,nuevoNombreImagen,contenido_limpio,tags)
     
-    conexion=mysql.connect()
+    conexion=psycopg2.connect()
     cursor=conexion.cursor()
     cursor.execute(sql,datos)
     conexion.commit()
@@ -192,7 +193,7 @@ def admin_post_delete():
         return redirect('/admin/login')
     id = request.form['txtID']
     print(id)
-    conexion=mysql.connect()
+    conexion=psycopg2.connect()
     cursor=conexion.cursor()
     cursor.execute("SELECT imagen FROM `post` WHERE id=%s",(id))
     post=cursor.fetchall()
@@ -203,7 +204,7 @@ def admin_post_delete():
         os.unlink("templates/sitio/img/"+str(post[0][0]))
     
     
-    conexion=mysql.connect()
+    conexion=psycopg2.connect()
     cursor=conexion.cursor()
     cursor.execute("DELETE FROM `post` WHERE id=%s",(id))
     conexion.commit()
@@ -212,7 +213,7 @@ def admin_post_delete():
     return redirect('/admin/post')
 @app.route("/blog/<nombre>")
 def blog(nombre):
-    conexion=mysql.connect()
+    conexion=psycopg2.connect()
     cursor=conexion.cursor()
     cursor.execute("SELECT * FROM `post` WHERE nombre=%s",(nombre))
     post=cursor.fetchall()
