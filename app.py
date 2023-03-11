@@ -8,6 +8,8 @@ import os
 import html
 import re
 import sqlite3
+import mysql.connector
+
 
 app=Flask(__name__)
 
@@ -15,12 +17,45 @@ app=Flask(__name__)
 
 app.secret_key="clave_secreta"
 mysql = MySQL()
-app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = ''
+app.config['MYSQL_DATABASE_HOST'] = 'dpg-cg6advt269v5l65bmqq0-a'
+app.config['MYSQL_DATABASE_USER'] = 'sitio_user'
+app.config['MYSQL_DATABASE_PASSWORD'] = '9NiEz3sJHh6OgpiCFsMEkqNLS6Kf83Xt'
 app.config['MYSQL_DATABASE_DB'] = 'sitio'
 mysql.init_app(app)
 
+
+def create_table():
+    # crea una conexión a la base de datos
+    conn = mysql.connector.connect(
+        host='dpg-cg6advt269v5l65bmqq0-a',
+        user='sitio_user',
+        password='9NiEz3sJHh6OgpiCFsMEkqNLS6Kf83Xt',
+        database='sitio'
+    )
+
+    # crea un cursor para la conexión
+    cursor = conn.cursor()
+
+    # crea la tabla post si esta no existe
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS post (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            nombre VARCHAR(255) NOT NULL,
+            descripcion VARCHAR(255) NOT NULL,
+            imagen VARCHAR(255),
+            contenido TEXT NOT NULL,
+            tag VARCHAR(255)
+        )
+    """)
+
+    # cierra el cursor y la conexión
+    cursor.close()
+    conn.close()
+
+# ejecuta la función create_table antes de la primera solicitud
+@app.before_first_request
+def before_first_request():
+    create_table()
 
     
 @app.route("/css/<css>")
