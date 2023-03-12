@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>{{ post[1]}}</title>
+  <title>{{nombre}}</title>
   <style>
 
 .container {
@@ -126,15 +126,15 @@ nav ul  a:hover {
         </div>
       </header>
     <div class="container">
-      {% for post in post %}
-        <h1>{{ post[1] }}</h1>
+      {% for posts in posts %}
+        <h1>{{ posts[1] }}</h1>
         <br>
-        <p>Publicado el {{post[2]}} por <strong>Gadi</strong></p>
+        <p>Publicado el {{posts[2]}} por <strong>Gadi</strong></p>
         <br>
-        <p style="word-wrap: break-word;text-align: justify;">{{ post[5] }}</p>
+        <p style="word-wrap: break-word;text-align: justify;">{{ posts[5] }}</p>
 
         </p>
-            <img class="imaj" src="/img/{{ post[4]}}" alt="Descripción de la imagen">
+            <img class="imaj" src="/img/{{ posts[4]}}" alt="Descripción de la imagen">
             {% endfor %}
       </div>
       <footer class="footer">

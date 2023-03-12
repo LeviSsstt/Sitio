@@ -48,18 +48,18 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for post in npost %}
+                    {% for posts in posts %}
                     <tr >
-                        <td scope="row">{{ post[0] }}</td>
-                        <td>{{ post[1] }}</td>
+                        <td scope="row">{{ posts[0] }}</td>
+                        <td>{{ posts[1] }}</td>
                         <td> 
-                           <img width="60" src="/img/{{post[4]}}" class="img-fluid rounded-top" alt="">
-                           {{post[4]}}
+                           <img width="60" src="/img/{{posts[4]}}" class="img-fluid rounded-top" alt="">
+                           {{posts[4]}}
                         </td>
 
                         <td>
                             <form action="/admin/post/delete" method="post">
-                                <input value= {{ post[0] }} type="hidden" name="txtID" id="txtID">
+                                <input value= {{ posts[0] }} type="hidden" name="txtID" id="txtID">
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
                         </td>
