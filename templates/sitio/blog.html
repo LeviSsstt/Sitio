@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+	{% for posts in posts %}
 	<title>{{posts[1]}} </title>
+	{% endfor %}
 	<style>
         /* Estilos para pantallas pequeñas (menos de 600 píxeles de ancho) */
 @media screen and (max-width: 600px) {
