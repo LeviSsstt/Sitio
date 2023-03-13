@@ -65,10 +65,10 @@
         </div>
         <div class="container">
           {% for post in post %}
+           
           <div class="card">
-            <img src="/img/{{ post[4]}}">
+            <img src="{{ post[4]}}" alt="imagen">
             <a href="/blog/{{ post[1]}}">  <h2>{{ post[1] }}</h2></a>
-            
             <p> {{ post[3] }}</p>
             <div class="tags">
               <span>{{post[6]}}</span>
@@ -86,7 +86,7 @@
           <div class="container-footer">
             <div class="row">
               <div class="col-md-12 text-center">
-                <p>&copy; 2021 - Mi blog personal</p>
+                <p>&copy; 2023 - Mi blog personal</p>
                 <div class="social-icons">
                   <a href="https://github.com/gadivalr" target="_blank"><i class="fab fa-github fa-2x text-white"></i></a>
                   <a href="https://www.instagram.com/gadi.valar/" target="_blank"><i class="fab fa-instagram fa-2x text-white"></i></a>

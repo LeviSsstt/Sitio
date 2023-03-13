@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, request, redirect, session, url_for, flash, send_from_directory, abort
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
@@ -5,15 +6,34 @@ from flask import send_from_directory
 import os
 import html
 import re
-import sqlite3
+
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import urllib.parse, hashlib
+import requests  
+from markupsafe import escape
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+from jinja2.utils import markupsafe 
+from markupsafe import Markup
+
+
+from werkzeug.utils import escape
+
 
 
 app = Flask(__name__)
+cloudinary.config(
+  cloud_name = "dacwrjdao",
+  api_key = "929543513912788",
+  api_secret = "eFlFzOxMUJHm6xs3FfbnNyVPtXk",
+  secure = True
+)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://ujnwugpgvon3etap:gGyiBlcBrNBPRsU0doOd@bs2dpuyw1atuftpcyqku-mysql.services.clever-cloud.com:3306/bs2dpuyw1atuftpcyqku'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SSL'] = True
+ssl=True
 db = SQLAlchemy(app)
 app.secret_key="clave_secreta"
 
@@ -24,15 +44,12 @@ with app.app_context():
         nombre = db.Column(db.String(255), nullable=False)
         fecha = db.Column(db.String(255), nullable=False)
         descripcion = db.Column(db.String(255), nullable=False)
-        imagen = db.Column(db.String(255), nullable=False)
+        imagen= db.Column(db.String(255), nullable=False)
         contenido = db.Column(db.Text, nullable=False)
         tag = db.Column(db.String(255), nullable=False)
+        nombre_imagen = db.Column(db.String(255), nullable=False)
+    
     db.create_all()
-    
-    #def __repr__(self):
-     #   return '<Post %r>' % self.nombre
-    
-
 
 @app.route("/css/<css>")
 def css_link(css):
@@ -52,7 +69,7 @@ def inicio():
     posts = []
     for post in quary:
         posts.append((post.id,post.nombre, post.fecha, post.descripcion, post.imagen, post.contenido, post.tag))
-            
+    
     return render_template('sitio/index.html', post=posts)
 
 @app.route('/img/<imagen>')
@@ -111,39 +128,43 @@ def admin_post():
         posts.append((post.id,post.nombre, post.fecha, post.descripcion, post.imagen, post.contenido, post.tag))
     return render_template('admin/post.html', posts=posts)
 
+
 @app.route('/admin/post/guardar', methods=['POST'])
 def admin_post_guardar():
     if not session.get('login'):
         return redirect('/admin/login')
+
     titulo = request.form['txtNombre']
     fecha = request.form['txtFecha']
     imagen = request.files['txtImagen']
     descripcion = request.form['txtDescripcion']
-    contenido = request.form['txtContenido']
+    contenidos = request.form['txtContenido']
     tags = request.form['txtTag']
     tiempo=datetime.now()
     horaActual=tiempo.strftime("%Y%H%M%S")
-    
-    if imagen.filename != '':
-        nuevoNombreImagen=horaActual+"_"+imagen.filename
-        imagen.save("templates/sitio/img/"+nuevoNombreImagen)
-        
+
     def limpiar_texto(texto):
         # Convertir las entidades HTML a sus caracteres correspondientes
         texto = html.unescape(texto)
         # Eliminar las etiquetas HTML
         texto = re.sub(r'<[^>]*>', '', texto)
         return texto
-    contenido_limpio = limpiar_texto(contenido)  
-        
+
+    contenido_limpio = limpiar_texto(contenidos)
+    resultado = cloudinary.uploader.upload(imagen)
+    nuevaUrlImagen = resultado['secure_url']
+    nombre_imagen = resultado['public_id']
+    
+
     # Crear un objeto Post con los datos del formulario
     post = Post(nombre=titulo, fecha=fecha, descripcion=descripcion,
-                imagen=nuevoNombreImagen, contenido=contenido_limpio, tag=tags)
-    
+                 imagen=nuevaUrlImagen,
+                contenido=contenidos, tag=tags, nombre_imagen=nombre_imagen)
+
     # Guardar el objeto Post en la base de datos
     db.session.add(post)
     db.session.commit()
-    
+
     return redirect('/admin/post')
 
 @app.route('/admin/post/delete', methods=['POST'])
@@ -155,12 +176,12 @@ def admin_post_delete():
     
     # Obtener el nombre de la imagen del post a eliminar
     post = Post.query.filter_by(id=id).first()
-    nombre_imagen = post.imagen
+    nombre_imagen = post.nombre_imagen
     
     # Eliminar la imagen del post
-    if os.path.exists("templates/sitio/img/" + nombre_imagen):
-        os.unlink("templates/sitio/img/" + nombre_imagen)
-    
+   # if os.path.exists("templates/sitio/img/" + nombre_imagen):
+    #os.unlink("templates/sitio/img/" + nombre_imagen)
+    cloudinary.uploader.destroy(nombre_imagen, invalidate=True)
     # Eliminar el post de la base de datos
     Post.query.filter_by(id=id).delete()
     db.session.commit()
@@ -169,12 +190,14 @@ def admin_post_delete():
 
 @app.route("/blog/<nombre>")
 def blog(nombre):
+    
     quary = db.session.query(Post).filter(Post.nombre == nombre).all()
     print(quary)
     posts = []
     for post in quary:
-        posts.append((post.id,post.nombre, post.fecha, post.descripcion, post.imagen, post.contenido, post.tag))
-    return render_template('sitio/blog2.html',posts=posts)
+        posts.append((post.id,post.nombre, post.fecha, post.descripcion, post.imagen,post.contenido, post.tag))
+      
+    return render_template('sitio/blog.html',posts=posts)
 
 if __name__ == '__main__':
     app.run(debug=True)
