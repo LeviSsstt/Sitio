@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Mi sitio web</title>
+	<title>{{posts[1]}} </title>
 	<style>
         /* Estilos para pantallas pequeñas (menos de 600 píxeles de ancho) */
 @media screen and (max-width: 600px) {
   header {
-    height: 55px; /* Reducir el tamaño del header */
+    height: 80px; /* Reducir el tamaño del header */
   }
   
   /* Otros estilos para el contenido del header en pantallas pequeñas */
@@ -15,7 +15,7 @@
 /* Estilos para pantallas grandes (más de 600 píxeles de ancho) */
 @media screen and (min-width: 600px) {
   header {
-    height: 55px; /* Mantener el tamaño del header */
+    height: 80px; /* Mantener el tamaño del header */
   }
   
   /* Otros estilos para el contenido del header en pantallas grandes */
@@ -107,7 +107,7 @@
 		
 		<h1>{{ posts[1] }}</h1>
         <br>
-        <p style="text-align: center;">Publicado el {{posts[2]}} por <strong>Gadi</strong> </p>
+        <p style="text-align: center;">Publicado {{posts[2]}} por <strong>Gadi</strong> </p>
         <br>
         <p style="text-align: center justify;"> {{posts[5]}} </p>
 		
