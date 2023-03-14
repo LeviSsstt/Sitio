@@ -165,6 +165,7 @@ main .sec {
 main .sec .content {
   position: relative;
   z-index: 2;
+  text-align: justify;
 }
 main .sec .content h2 {
   font-size: 3.5em;
@@ -175,6 +176,7 @@ main .sec .content h2 {
 main .sec .content p {
   font-size: 1.2em;
   color: #f5f7f8;
+  text-align: justify;
 }
 .titulo h2{
   font-size: 3.5em;
@@ -286,6 +288,7 @@ nav ul  a:hover {
   display: flex;
   flex-direction: column;
   border-radius: 5%;
+  margin-bottom: 20px;
 }
 
 .card img {

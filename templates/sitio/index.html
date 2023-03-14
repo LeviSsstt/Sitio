@@ -46,7 +46,7 @@
             <div class="sec">
               <div class="content">
                 <h2>ABOUT</h2>
-                <ps style="text-align: justify; color: white; "word-wrap: break-word;>
+                <ps style=" color: white">
                   ¡Bienvenidos! Aquí encontrarás un espacio donde comparto mis experiencias, pensamientos y reflexiones. Este es un lugar en el que puedo ser yo mismo, y espero que te sientas igual de cómodo/a aquí. Mi blog abarca una gran variedad de temas que me interesan, como la literatura, la música, el manga y la tecnología. Me encanta escribir y expresarme a través de la palabra escrita, y espero que puedas encontrar algo en mi blog que te haga sentir identificado/a o que te inspire de alguna manera. ¡Gracias por leer!
                 </p>
               </div>
@@ -58,8 +58,9 @@
          <ul>
             <li><a href="/">Home</a> </li>
             <li><a href="/mangas">Mangas fav</a> </li>
-            <!-- <li><a href="/post">Post</a> </li> -->
-            
+            <li><a href="/tags/RANDOM">Random</a> </li>
+            <li><a href="/tags/MANGA">Manga</a> </li>
+            <li><a href="/tags/UNIVERSIDAD">U</a> </li>
             <li><a href="/admin/login">Login</a> </li>
          </ul>   
         </div>
@@ -71,7 +72,7 @@
             <a href="/blog/{{ post[1]}}">  <h2>{{ post[1] }}</h2></a>
             <p> {{ post[3] }}</p>
             <div class="tags">
-              <span>{{post[6]}}</span>
+              <a href="/tags/{{post[6]}}"> <span>{{post[6]}}</span></a>
               <!-- <span>Etiqueta 2</span> -->
             </div>
           </div>
@@ -86,7 +87,7 @@
           <div class="container-footer">
             <div class="row">
               <div class="col-md-12 text-center">
-                <p>&copy; 2023 - Mi blog personal</p>
+                <p>&copy; 2023 - Blog personal</p>
                 <div class="social-icons">
                   <a href="https://github.com/gadivalr" target="_blank"><i class="fab fa-github fa-2x text-white"></i></a>
                   <a href="https://www.instagram.com/gadi.valar/" target="_blank"><i class="fab fa-instagram fa-2x text-white"></i></a>

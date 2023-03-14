@@ -205,7 +205,14 @@ def blog(nombre):
         fecha_modi = datetime.strptime(post.fecha, '%Y-%m-%d').strftime('%d de {mes}').format(mes=meses[datetime.strptime(post.fecha, '%Y-%m-%d').strftime('%B')])
         posts.append((post.id, post.nombre, fecha_modi, post.descripcion, post.imagen, post.contenido, post.tag))
       
-    return render_template('sitio/blog.html',posts=posts)
+    return render_template('sitio/blotry.html',posts=posts)
+@app.route("/tags/<tag>")
+def tags(tag):
+    quary = db.session.query(Post).filter(Post.tag == tag).all()
+    posts = []
+    for post in quary:
+        posts.append((post.id,post.nombre, post.fecha, post.descripcion, post.imagen, post.contenido, post.tag))
+    return render_template('sitio/catego.html',posts=posts)
 
 if __name__ == '__main__':
     app.run(debug=True)
