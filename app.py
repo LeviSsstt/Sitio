@@ -6,7 +6,7 @@ from flask import send_from_directory
 import os
 import html
 import re
-
+import locale
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 import urllib.parse, hashlib
@@ -65,7 +65,8 @@ def fonts_link(fonts):
 
 @app.route('/')
 def inicio():
-    quary = db.session.query(Post).all()
+    quary = db.session.query(Post).order_by(Post.fecha.desc()).all()
+    
     posts = []
     for post in quary:
         posts.append((post.id,post.nombre, post.fecha, post.descripcion, post.imagen, post.contenido, post.tag))
@@ -121,8 +122,9 @@ def admin_cerrar():
 def admin_post():
     if not session.get('login'):
         return redirect('/admin/login')
-    quary = db.session.query(Post).all()
+    quary = db.session.query(Post).order_by(Post.fecha.desc()).all()
     print(quary)
+    
     posts = []
     for post in quary:
         posts.append((post.id,post.nombre, post.fecha, post.descripcion, post.imagen, post.contenido, post.tag))
@@ -193,9 +195,11 @@ def blog(nombre):
     
     quary = db.session.query(Post).filter(Post.nombre == nombre).all()
     print(quary)
+    locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
     posts = []
     for post in quary:
-        posts.append((post.id,post.nombre, post.fecha, post.descripcion, post.imagen,post.contenido, post.tag))
+        fecha_modi = datetime.strptime(post.fecha, '%Y-%m-%d').strftime('%d de %B')
+        posts.append((post.id,post.nombre, fecha_modi, post.descripcion, post.imagen,post.contenido, post.tag))
       
     return render_template('sitio/blog.html',posts=posts)
 
