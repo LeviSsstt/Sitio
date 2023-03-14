@@ -158,8 +158,8 @@ def admin_post_guardar():
 
     # Crear un objeto Post con los datos del formulario
     post = Post(nombre=titulo, fecha=fecha, descripcion=descripcion,
-                 imagen=nuevaUrlImagen,
-                contenido=contenidos, tag=tags, nombre_imagen=nombre_imagen)
+                imagen=nuevaUrlImagen,
+                contenido=contenido_limpio, tag=tags, nombre_imagen=nombre_imagen)
 
     # Guardar el objeto Post en la base de datos
     db.session.add(post)
