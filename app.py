@@ -196,7 +196,9 @@ def blog(nombre):
     quary = db.session.query(Post).filter(Post.nombre == nombre).all()
     print(quary)
     posts = []
+    locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
     for post in quary:
+        fecha_modi = datetime.strptime(post.fecha, '%Y-%m-%d').strftime('%d de %B')
         posts.append((post.id,post.nombre, post.fecha, post.descripcion, post.imagen,post.contenido, post.tag))
       
     return render_template('sitio/blog.html',posts=posts)
