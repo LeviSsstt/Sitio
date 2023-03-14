@@ -195,11 +195,15 @@ def blog(nombre):
     
     quary = db.session.query(Post).filter(Post.nombre == nombre).all()
     print(quary)
+    
+    meses = {'January': 'enero', 'February': 'febrero', 'March': 'marzo', 'April': 'abril', 'May': 'mayo',
+             'June': 'junio', 'July': 'julio', 'August': 'agosto', 'September': 'septiembre',
+             'October': 'octubre', 'November': 'noviembre', 'December': 'diciembre'}
+
     posts = []
-    locale.setlocale(locale.LC_TIME, 'es_ES.UTF-8')
     for post in quary:
-        fecha_modi = datetime.strptime(post.fecha, '%Y-%m-%d').strftime('%d de %B')
-        posts.append((post.id,post.nombre, post.fecha, post.descripcion, post.imagen,post.contenido, post.tag))
+        fecha_modi = datetime.strptime(post.fecha, '%Y-%m-%d').strftime('%d de {mes}').format(mes=meses[datetime.strptime(post.fecha, '%Y-%m-%d').strftime('%B')])
+        posts.append((post.id, post.nombre, fecha_modi, post.descripcion, post.imagen, post.contenido, post.tag))
       
     return render_template('sitio/blog.html',posts=posts)
 
