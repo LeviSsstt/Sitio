@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+     <title>Dibujos</title>
+     
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+
+     <!-- Estilos CSS -->
+     <link rel="stylesheet" href="./css/estiloss.css">
+</head>
+<body>
+     <main class="container">
+          <div class="row">
+               <div class="col s12 center-align">
+                    <h1 class="titulo">Dibujos</h1>
+               </div>
+          </div>
+         
+          <div class="row galeria">
+               <div class="col s12 m4 l3">
+                    {% for posts in posts %}
+                    <div class="material-placeholder">
+                         <img src="{{posts[1]}}" alt="" class="responsive-img materialboxed" data-caption="{{posts[2]}}">
+                    </div>
+                    {% endfor %}
+               </div>
+               
+               
+          </div>
+     </main>
+
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+     <script src="js/mainn.js"></script>
+</body>
+</html>

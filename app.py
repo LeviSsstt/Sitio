@@ -19,6 +19,7 @@ from jinja2.utils import markupsafe
 from markupsafe import Markup
 
 
+
 from werkzeug.utils import escape
 
 
@@ -48,6 +49,12 @@ with app.app_context():
         contenido = db.Column(db.Text, nullable=False)
         tag = db.Column(db.String(255), nullable=False)
         nombre_imagen = db.Column(db.String(255), nullable=False)
+    class Dibujo(db.Model):
+        id_dibujos = db.Column(db.Integer, primary_key=True, autoincrement=True)
+        imagen = db.Column(db.String(255), nullable=False)
+        descripcion = db.Column(db.String(255), nullable=False)
+        fecha = db.Column(db.String(255), nullable=False)
+        imagen_nombre = db.Column(db.String(255), nullable=False)
     
     db.create_all()
 
@@ -213,6 +220,76 @@ def tags(tag):
     for post in quary:
         posts.append((post.id,post.nombre, post.fecha, post.descripcion, post.imagen, post.contenido, post.tag))
     return render_template('sitio/catego.html',posts=posts)
+
+@app.route("/dibujos")
+def dibujos():
+    quary = db.session.query(Dibujo).order_by(Dibujo.fecha.desc()).all()
+    print(quary)
+    
+    posts = []
+    for dibujo in quary:
+        posts.append((dibujo.id_dibujos, dibujo.imagen, dibujo.descripcion, dibujo.fecha, dibujo.imagen_nombre))
+    return render_template('sitio/galeria.html', posts=posts)
+
+@app.route('/admin/dibujos')
+def admin_dibujo():
+    if not session.get('login'):
+        return redirect('/admin/login')
+    quary = db.session.query(Dibujo).order_by(Dibujo.fecha.desc()).all()
+    print(quary)
+    
+    posts = []
+    for dibujo in quary:
+        posts.append((dibujo.id_dibujos, dibujo.imagen, dibujo.descripcion, dibujo.fecha, dibujo.imagen_nombre))
+    return render_template('admin/dibujos.html', posts=posts)
+
+@app.route('/sobremi')
+def sobremi():
+    return render_template('sitio/sobremi.html')
+
+
+@app.route('/admin/dibujos/guardar', methods=['POST'])
+def admin_dibujos_guardar():
+    if not session.get('login'):
+        return redirect('/admin/login')
+    
+    fecha = request.form['txtFecha']
+    imagen = request.files['txtImagen']
+    descripcion = request.form['txtDescripcion']
+   
+    resultado = cloudinary.uploader.upload(imagen)
+    nuevaUrlImagen = resultado['secure_url']
+    nombre_imagen = resultado['public_id']
+
+    # Crear un objeto Dibujo con los datos del formulario
+    dibujo = Dibujo(imagen=nuevaUrlImagen, descripcion=descripcion, fecha=fecha, 
+                    imagen_nombre=nombre_imagen)
+
+    # Guardar el objeto Dibujo en la base de datos
+    db.session.add(dibujo)
+    db.session.commit()
+    
+    flash('Se ha guardado el dibujo con éxito.', 'success')
+    return redirect('/admin/dibujos')
+@app.route('/admin/dibujos/delete', methods=['POST'])
+def admin_dibujo_delete():
+    if not session.get('login'):
+        return redirect('/admin/login')
+    id = request.form['txtID']
+    print(id)
+
+    # Obtener el nombre de la imagen del dibujo a eliminar
+    dibujo = Dibujo.query.filter_by(id_dibujos=id).first()
+    nombre_imagen = dibujo.nombre_imagen
+
+    # Eliminar la imagen del dibujo
+    cloudinary.uploader.destroy(nombre_imagen, invalidate=True)
+
+    # Eliminar el dibujo de la base de datos
+    Dibujo.query.filter_by(id_dibujos=id).delete()
+    db.session.commit()
+
+    return redirect('/admin/dibujos')
 
 if __name__ == '__main__':
     app.run(debug=True)
