@@ -280,7 +280,7 @@ def admin_dibujo_delete():
 
     # Obtener el nombre de la imagen del dibujo a eliminar
     dibujo = Dibujo.query.filter_by(id_dibujos=id).first()
-    nombre_imagen = dibujo.nombre_imagen
+    nombre_imagen = dibujo.imagen_nombre
 
     # Eliminar la imagen del dibujo
     cloudinary.uploader.destroy(nombre_imagen, invalidate=True)
