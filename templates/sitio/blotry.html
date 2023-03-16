@@ -238,13 +238,21 @@ footer {
 			margin-bottom: 10px;
 		}
 
-		.content p {
+		.content .texto {
 			font-size: 14px;
 			line-height: 1.5;
 			margin-bottom: 30px;
 			text-align: justify;
       
+  width: 100%;
+  max-width: 100%;
+  overflow-wrap: break-word;
+
+      
 		}
+    pre {
+  word-wrap: break-word;
+}
       
     </style>
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
@@ -265,18 +273,18 @@ footer {
     <main>
         <main>
             <div class="sec">
-              <div class="content">
+              <div class="content" >
                 {% for posts in posts %}
                 <h1>{{ posts[1] }}</h1>
                 <br>
                 <p style="text-align: center;">Publicado el {{posts[2]}} </p>
                 <br>
-                <p style="text-align: center justify;"> {{posts[5]}} </p>
-                  
-                </p>
+                
+                  <pre style="line-height: 1.5;font-size: 18px;white-space: pre-wrap; max-width: 100%; text-align: justify;"">{{posts[5]|safe }}</pre>
+    
                 <br>
                 <img src="{{ posts[4]}}" alt="Imagen">
-                {% endfor %}
+               {% endfor %}
               </div>
             </div>
             
@@ -295,7 +303,7 @@ footer {
         </footer>
         
        
-   
+    
    
     <script src="js/jquery-3.6.3.min.js"></script>
     <script src="js/jquery-migrate-3.4.1.min.js"></script>
